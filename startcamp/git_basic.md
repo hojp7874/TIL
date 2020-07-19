@@ -14,9 +14,16 @@ git을 활용할 때 GUI기반 퉁들도 존재한다.(ex-`seurcetree`)
 
 설치를 완료한 뒤엔 `author`정보를 입력한다.
 
+<<<<<<< HEAD
 ```bash
 $ git config --global user.name "User Name"
 $ git config --global user.email "User Email"
+=======
+##### h5 태그입니다.
+
+
+
+>>>>>>> 1879b92c0b0defea5284cc6771e4de676c45dba8
 
 $ git config --global --list
 user.name=Jinpyo Hong
@@ -149,3 +156,15 @@ $ git push origin master
 
 `git status`, `git remote -v`, `git log`
 
+
+
+### 원격 저장소에서 다운로드 (`pull`)
+
+```bash
+$ git pull origin master
+
+또는
+$ git pull github주소
+```
+
+- 가끔 pull이 안먹힐 때가 있는데 다른 컴퓨터로 push한 후 다시 시도하니까 됐음. 원인불명.
