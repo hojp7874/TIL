@@ -1,158 +1,151 @@
-# 마크다운(Markdown)
+# Git
 
-> 일반 텍스트 형식 구문을 사용하는 마크업 언어의 일종으로, 사용법이 쉽고 간결하여 빠르게 문서를 정리할 수 있습니다. 단, 모든 HTML 마크업을 대체하지는 않습니다.
-
-
-
-## 1. 문법
-
-### 1.1 Header
-
-> 헤더는 제목을 표현항ㄹ 때 사용합니다.
+> Git은 분산 버전 관이 시스템(DVCS)이다.
 >
-> 단순히 글자의 크기를 표현하는 것이 아니라, 의미론적인 중요도를 나타냅니다.
-
-- `<h1>`부터 `<h6>`까지 표현 가능합니다.
-- #의 개수로 표현하거나 `<h1></h1>`형태로 표현 가능합니다.
+> 소스코드의 버전 및 이력을 관리할 수 있다.
 
 
 
-<h1>h1 태그입니다.</h1>
+## 준비사항
 
-## h2 태그입니다.
+윈도우에서 `git`을 활용하기 위해서는 `git bash`가 필요하다.
 
-### h3 태그입니다.
+git을 활용할 때 GUI기반 퉁들도 존재한다.(ex-`seurcetree`)
 
-<h4>h4 태그입니다.</h4>
+설치를 완료한 뒤엔 `author`정보를 입력한다.
 
+```bash
+$ git config --global user.name "User Name"
+$ git config --global user.email "User Email"
 
-
-### 1.2 List
-
-> 목록을 나열할 때 사용합니다. 순서가 필요한 항목과 순서가 필요없는 항목으로 구분할 수 있습니다.
->
-> 순서가 있는 항목 아래에 순서가 없는 항목을 지정할 수도 있느며, 그 반대도 가능합니다.
-
-- 순서가 있는 목록
-  - `1.`을 작성하고 스페이스바를 누르면 생성할 수 있습니다.
-  - `tab`을 눌러서 하위 항목을 생성할 수 있고, `shift + tab`을 눌러서 상위항목으로 이동할 수도 있습니다.
-- 순서가 없는 목록
-  - `-` 또는 `*`를 작성하고 스페이스바를 눌러서 상위 항목으로 이동할 수 있습니다.
-
-
-
-- `-`을 사용한 순서업는 목록
-
-* `*`를 사용한 순서없는 목록
-
-
-
-### 1.3 Code Block
-
-> 코드 블럭은 작성한 코드를 정리하거나 강조하고 싶은 부분을 나타낼 때 사용합니다.
->
-> 인라인과 블럭 단위로 구분할 수 있습니다.
-
-- 인라인(Inline)
-  - 인라인 블럭으로 처리하고 싶은 부분을 백틱(`)으로 감쌉니다.
-- 블럭(Block)
-  - 백틱을 3번 입력(```)하고 엔터를 눌러 생성합니다.
-
-
-
-```python
-hello = '안녕하세요!'
-print(hello)
-#=> 안녕하세요!
+$ git config --global --list
+user.name=Jinpyo Hong
+user.email=hojp7874@gmail.com
 ```
 
 
 
-### 1.4 Image
+## 로컬 저장소(Local Repository) 활용하기
 
-> 로컬에 있는 이미지를 삽입하서나, 이미지 주소를 통하여 이미지를 삽입할 수 있습니다.
+### 1. 저장소 초기화
 
-- `![]()`를 작성하고, () 안에 이미지 주소를 삽입합니다. `[]`안에는 이미지 이름을 작성합니다.
+```bash
+$ git init
 
+Initialized existing Git repository in C:/Users/hojp7/Desktop/ssafy/TIL/.git/
+```
 
-
-![아이유](https://lh3.googleusercontent.com/proxy/9NEv0lFPA2YemScO1FEhVafzsbFFU2qEdaxU8hNR-AJB9brqZjc1YxZaX-8vDcbu5X3KAKbw4yDA2Ih8ueP6v2P8r0y4tBWwjw)
-
-
-
-### 1.5 Link
-
-> 특정 주소로 링크를 걸 때 사용합니다.
-
-- `[]()`를 작성하고, `()`안에 주소를 적습니다. `[]`안에는 주소 제목을 적습니다.
+- 저장소를 초기화하면, `.git`이라는 폴더가 생성된다. 여기에 git과 관련된 모든 정보가 들어간다.
+- git bash에 `(master)`라고 표기되는데, 이는 현재 `master` 브랜치에 있다는 것을 의미한다.
 
 
 
-[파이썬 공식문서](https://docs.python.org/3/)
+### 2. `add`
+
+작업공간(work directory)에서 변경된 사항을 이력으로 저장하기 위해서는 반드시 `staging area`라는 공간으로 이동시켜야 한다.
+
+```bash
+$ git add . # 현재 디랜토리의 모든 파일
+$ git add a.txt # 특정 파일
+$ git add assets/ # 특정 폴더
+```
 
 
 
-### 1.6 Table
+`add`하기 전 상태
 
-> 표를 작성하여 요소를 구분할 수 있습니다.
->
+```bash
+$ git status
+On branch master
+Your branch is up to date with 'origin/master'.
 
-- 파이프(`|`) 사이에 컬럼을 작성하고 엔터를 누릅니다.
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        startcamp/git_basic.md
 
-| 제목   | 설명            |
-| ------ | --------------- |
-| Python | 프로그래밍 언어 |
-| HTML   | 마크업 언어     |
-
-
-
-### 1.7 기타
-
-#### 1.7.1 인용문
-
-- `>`를 작성하고 스페이스바를 누릅니다.
-
-> 이것은 인용문입니다.
-
-- 인용문 안에 인용문을 중첩해서 작성할 수 있습니다.
-
-> 인용문입니다.
->
-> > 중첩 인용문입니다.
+nothing added to commit but untracked files present (use "git add" to track)
+```
 
 
 
-#### 1.7.2 수평선
+`add`후 상태
 
-- `---`또는 `***`또는 `___`를 입력하여 수평선을 생성합니다.
+```bash
+$ git status
+On branch master
+Your branch is up to date with 'origin/master'.
 
-
-
-첫번째 단락
-
----
-
-두번째 단락
-
-***
-
-세번째 단락
-
-___
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   startcamp/git_basic.md
+```
 
 
 
-#### 1.7.3 강조
+### 3. Commit
 
-- 이탤릭체
-  - 해당 부분은 애스터리스크`*` 또는 언더스코어`_`로 감싸줍니다.
-  - 이것은 *이탤릭체*입니다.
-- 볼드체
-  - 해당 부분을 애스터리스크 2개 `**`또는 언더스코어 2개 `__`로 감싸줍니다.
-  - 이것은 __볼드체__입니다.
-- 취소선
-  - 해당 부분을 물결표 2개 `~~`로 감싸줍ㅇ니다.
-  - 이것은 ~~취소선~~입니다.
+commit은 이력을 확정짓는 명령어다. 해당 시점에서 스냅샷을 찍는다.
+
+commit을 할 땐은 반드시 메시지를 입력해야 한다. 메시지는 변경사항에 대한 정확한 내용을 파악할 수 있게끔 작성한다.
+
+```bash
+$ git commit -m "git_basic.txt 파일 주가"
+[master a1124b2] git_basic.txt ?뚯씪 二쇨?
+ 1 file changed, 158 insertions(+)
+ create mode 100644 startcamp/git_basic.md
+```
 
 
+
+지금까지 작성한 이력들을 확인하기 위해 `git log` 명령어를 사용할 수 있다.
+
+```bash
+$ git log
+commit a1124b2576a00ee884def9a2f03e4919038ef93c (HEAD -> master)
+Author: User Name <User Email>
+Date:   Fri Jul 17 15:24:32 2020 +0900
+
+    git_basic.txt 파일 주가
+```
+
+
+
+## 원격 저장소(Remote Repository)활용하기
+
+원격 저장소를 제공하는 서비스는 여러 종류가 있지만, 대표적인 Github를 기준으로 작성한다.
+
+
+
+### 준비사항
+
+- Github에 저장소 생성
+
+
+
+### 원격 저장소 등록
+
+```bash
+$ git remote add origin 저장소URL
+```
+
+- 원격 저장소 `remote`로 `origin`이라는 이름으로 `저장소URL`을 추가`add`한다.
+
+- 등록된 원격 저장소 현황을 확인하기 위해서 `git remote-v`명령어를 실행한다.
+
+
+
+### 원격 저장소에 업로드 (`push`)
+
+```bash 
+$ git push origin master
+```
+
+- origin이라는 이름으로 설정된 저장소 UTL로 `master`브랜치를 업로드(`push`)한다.
+- 이후 수정사항이 발생할 때마다 `add`, `commit`, `push`작업을 수행한다.
+
+
+
+**항상 모든 명령어 입력할때마다 관련 상태를 확인하는 습관을 기르자!**
+
+`git status`, `git remote -v`, `git log`
 
