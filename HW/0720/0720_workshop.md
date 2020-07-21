@@ -29,8 +29,8 @@ for num in range(number):
 ```python
 number = int(input())
 
-for num in range(number):
-    print(number - num)
+for num in range(number, -1, -1):
+    print(num)
 ```
 
 
@@ -40,8 +40,8 @@ for num in range(number):
 ```python
 number = int(input())
 
-for num in range(number):
-    print(number - num, end=' ')
+for num in range(number, -1, -1):
+    print(num, end='')
 ```
 
 
