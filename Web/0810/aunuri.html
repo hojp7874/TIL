@@ -1,0 +1,754 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>한국기술교육대학교 종합정보시스템. - 아우누리</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<script type="text/javascript" src="/eXPortal/js/jquery.min.js"></script>
+<script type="text/javascript" src="/kut/js/json2.js"></script>
+<link rel="stylesheet" href="/css/login.css" type="text/css"  />
+<link rel="shortcut icon" href="/Portal.ico">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+
+#noticePopupArea {
+	height: 160px;
+	overflow-y: auto; 
+}
+
+#noticePopupArea img {
+	
+	height: auto;
+}
+
+</style>
+<script type="text/javascript">
+   if (document.location.protocol == 'http:') {
+        document.location.href = document.location.href.replace('http:', 'https:');
+    }
+
+
+
+if(parent.parentTopmenu) {
+	alert("세션이 종료 되어 로그인 페이지로 이동합니다.");
+	
+	parent.location.href = "/proc/Logout.do";
+}
+else {
+	if(parent.parent.parentTopmenu) {
+		alert("세션이 종료 되어 로그인 페이지로 이동합니다.");
+		
+		parent.parent.location.href = "/proc/Logout.do";
+	}	
+}
+
+
+
+
+
+
+
+$(document).ready(function() {
+	
+	document.getElementsByTagName('body')[0].className = 'js';
+	$('.tabarea .tab').bind('click focusin',function(){
+		$('.tabarea .tab').removeClass('on');
+
+		$(this).addClass('on');
+		$("#contentArea .cnt").hide();
+		$("#contentArea .cnt").eq($(this).index()).show();
+	});
+	
+  $("#user_id").focus();
+  checkId();
+  
+  getPrimarySchoolCalData();
+  
+  getBoardData();
+  
+  getNoticePopupData();
+  
+});
+
+function getPrimarySchoolCalData() {
+
+	var url = "/ktp/main/getPrimarySchoolCalData";
+
+	var getPrimarySchoolCalDataAjax = $.ajax({ 
+		url : url,
+		cache:false,
+		type:'POST' 
+	});
+
+	getPrimarySchoolCalDataAjax.done(function(data){
+		
+		var jdata = JSON.parse(data);
+		
+		if(jdata.result == "true") {
+			
+			var data = jdata.data;
+			
+			var cntArea = $("#contentArea .cnt").eq(1).find("ul");	
+			
+			for(var i = 0 ; i < data.length ; i++) {
+				
+				cntArea.empty();
+				
+				if(data.length > 0) {
+					
+					var liData = "";
+					var sDate = "";
+					var title = "";
+					var eDate = "";
+					for(var i = 0  ; i < data.length ; i++){
+						
+						title = data[i].CODENM_K;
+						sDate = data[i].CHANGE_BGNDE;
+						eDate = data[i].CHANGE_ENDDE;
+						
+						liData = "<li>";
+						liData += "<span class=\"bo_cont\">";
+						liData += "<a onclick=\"javascript:onPrimarySchPage('" + title + "','" + sDate + "','" + eDate + "');\">";
+						liData +=  title;
+						liData += "</a></span>";
+						liData += "<span class=\"bo_date\">";
+						liData += sDate.substring(0,4) + "." + sDate.substring(4,6) + "." + sDate.substring(6,8);
+						liData += "</span></li>";
+						
+						cntArea.append(liData);
+						
+					}
+					
+				}
+				else {
+					
+					liData = "<li><span class=\"bo_cont\"><a href=\"#\">";
+					liData += "데이터가 없습니다.";
+					liData += "</a></span>";
+					liData += "<span class=\"bo_date\">";
+					liData += "</span></li>";
+					
+					cntArea.append(liData);
+				}
+								
+
+				
+			}
+			
+			
+		}
+		
+		
+	
+	});
+	
+	
+}
+
+var isCheckNoticePopup = false;
+function getNoticePopupData() {
+	
+	var url = "/ktp/main/getNoticePopupData";
+
+	var getNoticePopupDataAjax = $.ajax({ 
+		url : url,
+		cache:false,
+		type:'POST' 
+	});
+
+	getNoticePopupDataAjax.done(function(data){
+		
+		var jdata = JSON.parse(data);
+		
+		
+		if(jdata.result == "true") {
+			isCheckNoticePopup = true;
+			
+			$("#contentArea .cnt").hide();
+			
+			$(".tabarea .tab").removeClass("on");
+			$(".tabarea #noticePopupTab").addClass("on");
+			$(".tabarea #noticePopupTab").show();
+			
+			var type= jdata.type;
+			
+			var data = "";
+			if(type == "html") {
+				
+				data = jdata.content;
+				
+			}
+			else if(type == "image"){
+				
+				var dData = jdata.detailData;
+				for(var i = 0 ; i < dData.length ; i++){
+					
+					if(dData[i].IMAGE_PATH != null) {
+						
+							data += "<a class=\"link-url\" target=\"_blank\" href=\"" + dData[i].LINK_URL + "\"><img stye=\"width:100%;\" src=\"" + dData[i].IMAGE_PATH + "\"></a>";
+							
+					}
+					
+				}
+				
+			}
+			else {
+				data = "<a class=\"link-url\" target=\"_blank\" href=\"" + jdata.detailData[0].URL + "\">" + jdata.data.TITLE + "</a>";
+			}
+			
+		}
+		
+		$("#contentArea #noticePopupArea").append(data);
+		
+		$("#contentArea #noticePopupArea").show();
+		
+	});
+	
+}
+
+function getBoardData() {
+	
+	
+	var url = "/ctt/board/getBoardData";
+
+	var getBoardDataAjax = $.ajax({ 
+		url : url,
+		cache:false,
+		type:'POST' 
+	});
+
+	getBoardDataAjax.done(function(data){
+		
+		var jdata = JSON.parse(data);
+		
+		if(jdata.result == "true") {
+			
+			var data = jdata.boardData;
+			
+			var cntArea = null;
+			
+			for(var i = 0 ; i < data.length ; i++) {
+				
+				if(i == 1) {
+					cntArea = $("#contentArea .cnt").eq(i+1).find("ul");
+				}
+				else {
+					cntArea = $("#contentArea .cnt").eq(i).find("ul");	
+				}
+				
+				cntArea.empty();
+				
+				if(data[i].length > 0) {
+					
+					var liData = "";
+					for(var j = 0  ; j < data[i].length ; j++){
+						
+						liData = "<li>";
+						liData += "<span class=\"bo_cont\">";
+						liData += "<a onclick=\"javascript:onBoardPage('" + data[i][j].boardId + "', '" + data[i][j].postSeq + "');\">";
+						liData += data[i][j].title ;
+						liData += "</a></span>";
+						liData += "<span class=\"bo_date\">";
+						liData += data[i][j].creDt.substring(0,4) + "." + data[i][j].creDt.substring(4,6) + "." + data[i][j].creDt.substring(6,8);
+						liData += "</span></li>";
+						
+						cntArea.append(liData);
+						
+					}
+					
+				}
+				else {
+					
+					liData = "<li><span class=\"bo_cont\"><a href=\"#\">";
+					liData += "데이터가 없습니다.";
+					liData += "</a></span>";
+					liData += "<span class=\"bo_date\">";
+					liData += "</span></li>";
+					
+					cntArea.append(liData);
+				}
+								
+
+				
+			}
+			
+			
+		}
+		else {
+			
+		}
+	});
+	
+	
+}
+
+function onBoardPage(boardId, postSeq) {
+	
+	var url = "/ctt/bb/bulletin?dm=pr&b=" + boardId + "&p=" + postSeq;
+
+	var parentX = window.screenTop;
+	var parentY = window.screenLeft;
+
+	if(parentX == null) {
+		parentX = window.screenX;
+	}
+
+	if(parentY == null) {
+		parentY = window.screenY;
+	}
+	
+	var option = 'width=750,top=' + (parentX + 300) + ',left=' + (parentY + 800) + ',height=540,scrollbars=no,resizable=no';
+	var targetNm = "_boardPop";
+	
+	var popup = window.open(url, targetNm, option);
+	popup.focus();
+	
+}
+
+function onPrimarySchPage(title, sDate, eDate) {
+	
+	$("#pSchForm [name='title']").val(title);
+	$("#pSchForm [name='sDate']").val(sDate);
+	$("#pSchForm [name='eDate']").val(eDate);
+	
+	
+	var url = "/kut/page/primaryPopup.jsp";
+	var targetNm = "_primarySchoolCal";
+
+	var parentX = window.screenTop;
+	var parentY = window.screenLeft;
+
+	if(parentX == null) {
+		parentX = window.screenX;
+	}
+
+	if(parentY == null) {
+		parentY = window.screenY;
+	}
+	
+	var option = 'width=750,top=' + (parentX + 300) + ',left=' + (parentY + 800) + ',height=540,scrollbars=no,resizable=no';
+	
+	var popup = window.open("", targetNm, option);
+	
+	var frm = document.getElementById("pSchForm");
+	frm.target = targetNm;                   
+	frm.action = url;                    
+	frm.method = "post";
+	frm.submit();     
+	
+	popup.focus();
+	
+}
+
+
+function onPageInfo(type) {
+	
+	var url = "";
+	
+	var width = "";
+	var height= "";
+	var targetNm = "";
+	
+	if(type == "guideInfo") {
+		url = "/kut/page/guideUserInfo.jsp";
+		width = "670";
+		height = "310";
+		targetNm = "_ptlguideinfo";
+	} else if(type =="findUser") {
+		url = "/kut/page/findUser.jsp";
+		width = "700";
+		height = "670";
+		targetNm = "_ptlfinduser";
+	} else if(type =="createAccount") {
+		url = "/kut/page/createAccount.jsp";
+		width = "700";
+		height = "560";
+		targetNm = "_ptlcreateuser";
+	} else if(type == "certLogin") {
+		url = "/cert_login_front.jsp";
+		width = "700";
+		height = "600";
+		targetNm = "_ptlcreateuser";
+	} else {
+		alert("버튼을 다시 클릭해주세요.");
+		return;
+	}
+	
+	var parentX = window.screenTop;
+	var parentY = window.screenLeft;
+
+	if(parentX == null) {
+		parentX = window.screenX;
+	}
+
+	if(parentY == null) {
+		parentY = window.screenY;
+	}
+	
+	var option = 'width=' + width + ',top=' + (parentX + 100) + ',left=' + (parentY + 100) + ',height=' + height;
+	
+	if(type == "createAccount"){
+		option += ',scrollbars=yes,resizable=no';
+	}else{
+		option += ',scrollbars=no,resizable=no';
+	}
+	
+	console.log(option);
+	
+	var popup = window.open(url, targetNm, option);
+	popup.focus();
+	
+	
+}
+
+function doPortalLogin() {
+	var userId = $("#user_id").val();
+	var userPwd = $("#user_pwd").val();
+	
+	if(!userId) {
+		alert("로그인 할 아이디를 입력해주세요.");
+		return;
+	}
+	
+	if(!userPwd) {
+		alert("계정 또는 비밀번호가 틀렸습니다.");
+		return;
+	}
+	
+	$("<input>").attr({
+	  type: "hidden",
+	  name: "RelayState",
+	  value: "/index.jsp"
+	}).appendTo("form[name=ssoLoginFrm]");
+	
+	$("<input>").attr({
+	  type: "hidden",
+	  name: "id",
+	  value: "PORTAL"
+	}).appendTo("form[name=ssoLoginFrm]");
+	
+	$("<input>").attr({
+	  type: "hidden",
+	  name: "targetId",
+	  value: "PORTAL"
+	}).appendTo("form[name=ssoLoginFrm]");
+	
+	$("<input>").attr({
+	  type: "hidden",
+	  name: "user_password",
+	  value: $("#user_pwd").val()
+	}).appendTo("form[name=ssoLoginFrm]");
+	
+	$("form[name=ssoLoginFrm]").attr('action' , '/sso/sso_login.jsp').submit();
+}
+
+function doSSOLogin() {
+	$("form[name=ssoLoginFrm]").attr('action' , '/sso/sso_login.jsp').submit();
+	//checkLoginId();	
+}
+
+function setBackImgStatus(val) {
+  if($(val).val().length == 0) {
+    val.style.backgroundSize = "100%";
+  } else {
+    val.style.backgroundSize = "0%";
+  } 
+}
+
+function doEnter(e) {
+  var keynum;
+    
+  if(window.event) { // IE8 and earlier
+    keynum = e.keyCode;
+  } else if(e.which) { // IE9/Firefox/Chrome/Opera/Safari
+    keynum = e.which;
+  }
+  if(keynum == 13) {
+    $("#user_password").focus();
+  }
+}
+
+
+function doSSOEnter(e) {
+  var keynum;
+    
+  if(window.event) { // IE8 and earlier
+    keynum = e.keyCode;
+  } else if(e.which) { // IE9/Firefox/Chrome/Opera/Safari
+    keynum = e.which;
+  }
+  if(keynum == 13) {
+    $("#user_pwd").focus();
+  }
+}
+
+function doSSOLoginEnter(e) {
+	  var keynum;
+	  if(window.event) { // IE8 and earlier
+	    keynum = e.keyCode;
+	  } else if(e.which) { // IE9/Firefox/Chrome/Opera/Safari
+	    keynum = e.which;
+	  }
+	  
+	  if(keynum == 13) {
+		  //doSSOLogin();
+		  doPortalLogin();
+	  }
+	}
+
+function getCookie(name) {
+  var nameOfCookie = name + "="; 
+  var x = 0; 
+  while(x <= document.cookie.length) { 
+    var y = (x+nameOfCookie.length); 
+    if(document.cookie.substring(x, y) == nameOfCookie) { 
+      if((endOfCookie=document.cookie.indexOf(";", y)) == -1) { 
+        endOfCookie = document.cookie.length; 
+      } 
+      return unescape(document.cookie.substring(y, endOfCookie)); 
+    } 
+    x = document.cookie.indexOf(" ", x) + 1; 
+    if(x == 0) break; 
+  } 
+  return ""; 
+}
+
+function setKtpCookie(name, value, expireDate) {
+  var today = new Date();
+  today.setDate(today.getDate() + parseInt(expireDate)); 
+  document.cookie = (name + "=" + escape(value) + ";domain=.koreatech.ac.kr;path=/;expires=" + today.toGMTString() + ";");
+}
+
+function saveId() {
+  var cookieName = "loginId";
+  var id = $("#user_id").val();
+  setKtpCookie(cookieName, id, 100);
+}
+
+function dontSaveId() {
+  var cookieName = "loginId";
+  setKtpCookie(cookieName, "", -1);
+}
+
+function checkId() {
+  var cookieName = "loginId";
+  var value = getCookie(cookieName);
+  if(value != null && value.length != 0) {
+    $("#saveIdIpt").attr("checked", true);
+    $("#user_id").val(value);
+    $("#user_password").focus();
+    setBackImgStatus($("#user_id")[0]);
+  }
+}
+
+function onPage(lang) {
+	setKtpCookie("lang", lang, 10);
+	setKtpCookie("kutLang", lang, 10); // 타 시스템 사용
+	document.location.href="/login.jsp?lang=" + lang;
+}
+
+</script>
+</head>
+<body>
+<div id="login_wrap">
+	<div id="skipnavi"> 
+		<!-- <a href="#login_content">로그인 바로가기</a> <a href="#bottom_quick_area">퀵메뉴 바로가기</a> -->
+	</div>
+	<div class="logo">
+		<h1><img src="/images/logo_login.png" alt="한기대가 위치한 ‘아우내’[‘병천(竝川)의 순 우리말]의 ‘아우’와 인터넷 세상을 의미하는 ‘누리’의 합성어"/></h1>
+		<!--
+		<span>
+			<a onclick="javascript:onPage('ko')"><img src="/images/ico_ko.gif" alt="한국어"/></a>
+			<a onclick="javascript:onPage('en')"><img src="/images/ico_en.gif" alt="영어"/></a>
+		</span> 
+		 -->
+		 <!-- 2016.08.10 언어설정 정보 변경 -->
+		 <span>
+			<a onclick="javascript:onPage('ko')">한국어</a>
+			&nbsp;|&nbsp;
+			<a onclick="javascript:onPage('en')">English</a>
+		</span>
+	</div>
+	<p class="login_img_text">
+		<img src="/images/login_img_text.png" alt="국내 최고의 실천공학과 인적자원개발의 창조적 융합 대학-VISION 2020"> 
+	</p>
+	<!-- login_content S -->
+	<div id="login_content">
+		<div class="login_area">
+			<dl>
+				<dt>
+            <img src="/images/login_title.png" alt="로그인"/>
+        </dt>
+        <dd>
+					<fieldset>
+						<legend>로그인</legend>
+						<form method="POST" id="ssoLoginFrm" name="ssoLoginFrm" >
+							<ul class="login_input_area">
+              	<li class="input_row">
+									<label for="user_id" id="label_id_area" class="blind"  >아이디입력</label>
+                  <input type="text" id="user_id" name="user_id" tabindex="7" accesskey="L" placeholder="아이디입력" class="int" maxlength="30" onKeyDown="javascript:doSSOEnter(event)"/>
+                </li>
+                <li class="input_row">
+									<label for="user_pwd" id="label_pw_area" class="blind" >비밀번호입력</label>
+									<input type="password" id="user_pwd" name="user_pwd" tabindex="8" placeholder="비밀번호입력" class="int" maxlength="30"  onKeyDown="javascript:doSSOLoginEnter(event)" autocomplete="off"/>
+                </li>
+							</ul>
+							<ul class="login_bu_area">
+								
+								<li class="btn01"><a onclick="javascript:doPortalLogin();">로그인</a></li>
+								<li class="btn02"><a id="certLoginReady" onclick="javascript:onPageInfo('certLogin');">인증서<br>로그인</a></li>
+							</ul>
+						</form>
+					</fieldset>
+				</dd>
+				<dd>
+					<ul class="toplogin_bu_area">
+						<li class="mg_r5">
+							<a class="link-url" onclick="javascript:onPageInfo('guideInfo');">
+								ID/PW 안내
+							</a><!-- ID/PW 안내 -->
+						</li>
+						<li class="mg_r5">
+							<a class="link-url" onclick="javascript:onPageInfo('findUser');">
+								ID/PW 찾기
+							</a><!-- ID/PW 찾기 -->
+						</li>
+						<li class="mg_r5">
+							<a class="link-url" onclick="javascript:onPageInfo('createAccount');">
+								계정생성
+							</a><!-- 계정생성 -->
+						</li>
+					</ul>
+				</dd>
+				<dd>
+					<ul class="tel">
+						<li class="font-ko"><span>ID 및 Password 문의</span><span class="tel-num">041-560-1396</span></li><!-- ID 및 Password 문의 -->
+						<li class="font-ko"><span>포털 시스템 사용문의</span><span class="tel-num">041-560-1397</span></li><!--포털 시스템 사용문의  -->
+					</ul>
+				</dd>    
+			</dl>
+		</div>
+		
+		<div class="board_area"> 
+			<!-- 공지사항 S -->
+			<div class="tabarea">
+				<a class="tab on">
+					<span>
+						공지사항
+					</span>
+				</a><!-- 공지사항 -->
+				<a class="tab">
+					<span>
+						주요학사일정
+					</span>
+				</a><!-- 주요학사일정 -->
+				<a class="tab">
+					<span>
+						FAQ
+					</span>
+				</a><!-- FAQ -->
+				<a class="tab" id="noticePopupTab" style="display: none;">
+					<span>
+						알림
+					</span>
+				</a>
+			</div>
+			<div id="contentArea" class="contentarea">
+				<div class="cnt">
+					<ul>
+						<li><span class="bo_cont"><a class="link-url">데이터 조회중입니다.</a></span> <span class="bo_date"></span></li>
+					</ul>
+				</div>
+				<div class="cnt" style="display: none;" id="priSchCal">
+					<ul>
+						<li><span class="bo_cont"><a class="link-url">데이터 조회중입니다.</a></span> <span class="bo_date"></span></li>
+					</ul>
+				</div>
+				<div class="cnt" style="display: none;">
+					<ul>
+						<li><span class="bo_cont"><a class="link-url">데이터 조회중입니다.</a></span> <span class="bo_date"></span></li>
+					</ul>
+				</div>	
+				<div class="cnt" style="display: none;" id="noticePopupArea">
+				</div>
+			</div>
+			<!-- 공지사항 E --> 
+		</div>
+		<form name="pSchForm" id="pSchForm" style="display: none;">
+			<input type="hidden" name="title" >
+			<input type="hidden" name="sDate" >
+			<input type="hidden" name="eDate" >
+		</form>
+	</div>
+	<!-- login_content E -->
+	
+</div>
+<div class="btm_line"></div>
+
+<!-- 아이콘 퀵메뉴 S -->
+<div id="bottom_quick_area">
+	<ul>
+		<li style="background-image: url(/images/ico_line_h.png), url(/images/ico_line_h.png); background-position: left, right;background-repeat: no-repeat;">
+			<a class="icon01" href="http://www.koreatech.ac.kr/" target="_blank">홈페이지</a><!-- 홈페이지 -->
+		</li>
+		<li>
+			<a class="icon02" href="http://email.koreatech.ac.kr/" target="_blank">웹메일</a><!-- 웹메일 -->
+		</li>
+		<li>
+			<a class="icon03" href="http://el.koreatech.ac.kr/" target="_blank">온라인교육</a><!-- 온라인교육 -->
+		</li>
+		<li>
+			<a class="icon04" href="http://kut.webminwon.kr" target="_blank">제증명</a><!-- 제증명 -->
+		</li>
+		<li>
+			<a class="icon05" href="http://help.kut.ac.kr" target="_blank">원격지원</a><!-- 원격지원 -->
+		</li>
+		<li>
+			<a class="icon06" href="http://lib.koreatech.ac.kr/pyxis-api/sso/check" target="_blank">다산정보관</a><!-- 다산정보관 -->
+		</li>
+		<li>
+			<a class="icon07" href="http://knw.koreatech.ac.kr" target="_blank">웹디스크</a><!-- 웹디스크 -->
+		</li>
+		<li style="background-image: url(/images/ico_line_h.png); background-position: right;background-repeat: no-repeat;">
+			<a class="icon08" onclick="javascript:window.open('/kut/manual/user_guide.jsp', '_blank', 'width=370,height=270,scrollbars=no,resizable=no');">사용자가이드 <br>다운로드</a><!-- 사용자가이드 다운로드 -->
+		</li>
+	</ul>
+</div>
+<!-- 아이콘 퀵메뉴 E --> 
+
+<!-- 풋터 S -->
+<div id="footer_main_address">
+	<div class="footer_main">
+		<ul class="info">
+			<li class="ft_logo"><img src="/images/logo_login_footer.png" alt="한국기술교육대학교"/></li>
+			<li class="address">31253) 충청남도 천안시 동남구 병천면 충절로 1600 (가전리, 한국기술교육대학교)   Tel. 041-560-1114  |  Copyrightⓒ2016 KOREATECH. All rights reserved.</li>
+		</ul>
+	</div>
+</div>
+<!-- 풋터 E -->
+</body>
+
+<script type="text/javascript">
+
+function setPopupCookie(poChkBox, psCookieName, pnExpireDate) {
+  if($(poChkBox).is(":checked") == true) {
+    setCookie(psCookieName, "Y", pnExpireDate);
+  } else {
+    setCookie(psCookieName, null, -1);
+  }
+}
+
+function setCookie(name, value, expireDate) {
+  var today = new Date();
+  today.setDate(today.getDate() + expireDate); 
+  document.cookie = (name + "=" + escape(value) + ";path=/;expires=" + today.toGMTString() + ";");
+}
+
+</script>
+
+
+</html>
