@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1 class='text-center my-4'>{{writing.title}}</h1>
+<h3>{{writing.content}}</h3><hr>
+<div class='d-flex justify-content-between flex-wrap'>
+    <div class='d-flex flex-column align-items-end'>
+        <p style='font-size:12px'>글 작성 시각: {{writing.created_at}}</p>
+        <p style='font-size:12px'>최종 수정 시각: {{writing.updated_at}}</p>
+    </div>
+    <div class='d-flex'>
+        <form action="{% url 'pages:delete' writing.pk %}" method='POST'>
+            {% csrf_token %}
+            <input class='btn btn-outline-danger' type='submit' value='삭제'></input>
+        </form>
+        <div class='mx-1'>
+            <a class='btn btn-outline-warning' href="{% url 'pages:edit' writing.pk %}">수정</a>
+            <a class='btn btn-outline-primary' href="{% url 'pages:index' %}">목록</a>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
