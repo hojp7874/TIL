@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            // let a = "ABCMINMIN";
+            // let b = "BBQCOCO";
+            // let c = a + b;
+            // let result = [];
+
+            // for (let i = c.length - 1; i >= 0; i--) {
+            //     if (i % 2 === 0) {
+            //         result.push(c[i]);
+            //     }
+            // }
+
+            // alert(result);
+
+            // const a = "KFCOCOBBQMINMINC";
+            // // let g1 = a.indexOf("C");
+            // // alert(g1);
+            // let g2 = [];
+            // // for (let i = 0; i < a.length; i++) {
+            // //     if (a[i] == "C") {
+            // //         g2.push(i);
+            // //     }
+            // // }
+            // g = -1;
+            // while (1) {
+            //     g = a.indexOf("C", g + 1);
+            //     if (g == -1) break;
+            //     g2.push(g);
+            // }
+            // alert(g2);
+
+            // const str = "ABCABCMCABCABCMCBBQABC";
+            // let countA = 0;
+            // let countB = 0;
+            // let countC = 0;
+            // for (let i = 0; i < str.length; i++) {
+            //     if (str[i] == "A") {
+            //         countA++;
+            //     }
+            //     if (str[i] == "B") {
+            //         countB++;
+            //     }
+            //     if (str[i] == "C") {
+            //         countC++;
+            //     }
+            // }
+            // let countABC = [];
+            // let abc = -1;
+            // while (1) {
+            //     abc = str.indexOf("ABC", abc + 1);
+            //     if (abc == -1) break;
+            //     countABC.push(abc);
+            // }
+            // alert(countABC.length);
+
+            // // alert(countA);
+            // // alert(countB);
+            // // alert(countC);
+
+            const str = "BTSMINBTSMINBTSKKOPSM";
+            let target = ["SM", "MIN", "OP", "VO", "TSM"];
+
+            function getCount(tar) {
+                let a = -1;
+                let cnt = 0;
+                while (1) {
+                    a = str.indexOf(tar, a + 1);
+                    if (a == -1) break;
+                    cnt++;
+                }
+                return cnt;
+            }
+            let max = 0;
+            let maxStr;
+            for (let i = 0; i < target.length; i++) {
+                let cnt = getCount(target[i]);
+                if (cnt > max) {
+                    max = cnt;
+                    maxStr = target[i];
+                }
+            }
+            alert(maxStr);
+        </script>
+    </body>
+</html>

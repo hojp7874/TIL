@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>select 값 가져오기</title>
+    </head>
+    <body>
+        <select class="animal">
+            <option value="cat" selected>고양이</option>
+            <option value="dog">강아지</option>
+            <option value="panda">판다</option>
+        </select>
+
+        <script>
+            const animal = document.querySelector(".animal");
+            animal.addEventListener("change", function () {
+                console.log("test");
+                console.log(animal.options);
+                console.log(animal.selectedIndex);
+                let value = animal.options[animal.selectedIndex].value;
+                console.log(value);
+
+                let text = animal.options[animal.selectedIndex].text;
+                console.log(text);
+            });
+        </script>
+    </body>
+</html>

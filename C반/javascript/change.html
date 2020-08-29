@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>change event</title>
+    </head>
+    <body>
+        <input class="id-input" type="text" />
+        <div class="id-result"></div>
+
+        <script>
+            const idInput = document.querySelector(".id-input");
+            const idResult = document.querySelector(".id-result");
+
+            idInput.addEventListener("change", function (e) {
+                console.log("test");
+                idResult.textContent = e.target.value;
+                console.log(e);
+                console.log(e.target.value);
+            });
+        </script>
+    </body>
+</html>
