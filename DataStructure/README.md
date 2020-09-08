@@ -12,11 +12,11 @@
 
 ### 선형 구조
 
-- [리스트](https://github.com/hojp7874/TIL/DataStructure/Linear/List.md)
-- [연결 리스트](https://github.com/hojp7874/TIL/DataStructure/Linear/LinkedList.md)
-- [데크](https://github.com/hojp7874/TIL/DataStructure/Linear/Queue.md)
-- [스텍](https://github.com/hojp7874/TIL/DataStructure/Linear/Stack.md)
-- [큐](https://github.com/hojp7874/TIL/DataStructure/Linear/Queue.md)
+- [리스트](https://github.com/hojp7874/TIL/blob/master/DataStructure/Linear/List.md)
+- [연결 리스트](https://github.com/hojp7874/TIL/blob/master/DataStructure/Linear/LinkedList.md)
+- [데크](https://github.com/hojp7874/TIL/blob/master/DataStructure/Linear/Queue.md)
+- [스텍](https://github.com/hojp7874/TIL/blob/master/DataStructure/Linear/Stack.md)
+- [큐](https://github.com/hojp7874/TIL/blob/master/DataStructure/Linear/Queue.md)
 
 ### 비선형구조
 
