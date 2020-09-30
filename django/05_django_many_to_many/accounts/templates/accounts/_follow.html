@@ -1,0 +1,24 @@
+<!-- 왜 form이 안먹혀 ㅡㅡ -->
+
+<div class="jumbotron">
+    <h1 class="display-4">{{ person.username }}</h1>
+    <p class="lead">팔로워: {{ person.followers.count }}명</p>
+    {% for follower in person.followers.all %}
+        <p>{{ follower.username }}</p>
+    {% endfor %}
+    <p class="lead">팔로잉: {{ person.followings.count }}명</p>
+    {% for following in person.followings.all %}
+        <p>{{ following.username }}</p>
+    {% endfor %}
+    <hr class="my-4">
+    {% if request.user != person %}
+        <form action="{% url 'accounts:follow' person.username %}" method='POST'>
+            {% csrf_token %}
+            {% if request.user in person.followers.all %}
+                <input type="submit" value="Unfollow">
+            {% else %}
+                <input type="submit" value="Follow">
+            {% endif %}
+        </form>
+    {% endif %}
+</div>

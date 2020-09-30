@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class='text-center'>유저 목록</h2><br>
+{% for user in users %}
+<p>유저 이름: {{ user.username }}</p>
+<hr>
+{% endfor %}
+{% endblock %}
