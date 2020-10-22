@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>todo CRUD</title>
+  <style>
+    .done {
+      text-decoration: line-through;
+    }
+  </style>
+</head>
+<body>
+  <input type="text">
+  <button>Todo!</button>
+  <ul></ul>
+
+  <script>
+    const button = document.querySelector('button')
+    const input = document.querySelector('input')
+
+    function addTodoUpdateDelete () {
+      const content = input.value
+
+      // (content !== '')
+      if (content) {
+        const li = document.createElement('li')
+        li.innerText = content
+
+        const ul = document.querySelector('ul')
+        ul.appendChild(li)
+        input.value = ''
+        
+        // Update
+        // li.style.textDecoration = 'line-through'
+        li.addEventListener('click', function (event) {
+          //1. .length 프로퍼티 활용
+          // if (event.target.classList.length) {
+          //   event.target.classList.remove('done')
+          // } else {
+          //   event.target.classList.add('done')
+          // }
+
+          //2. contains 메서드 활용
+          // if (event.target.classList.contains('done')) {
+          //   event.target.classList.remove('done')
+          // } else {
+          //   event.target.classList.add('done')
+          // }
+
+          //3. toggle 메서드 활용
+          event.target.classList.toggle('done')
+        })
+
+        // li.remove()
+        const deleteButton = document.createElement('button')
+
+        deleteButton.innerText = 'X'
+        deleteButton.style.marginLeft = '10px'
+
+        li.appendChild(deleteButton)
+
+        // Delete
+        deleteButton.addEventListener('click', function () {
+          li.remove()
+        })
+
+      } else {
+        alert('빈 값 안됨!!!!!')
+      }
+    }
+
+    button.addEventListener('click', addTodoUpdateDelete)
+    input.addEventListener('keydown', function (event) {
+      // console.log(event)
+      if (event.code === 'Enter') {
+        addTodoUpdateDelete()
+      }
+    })
+  </script>
+</body>
+</html>
