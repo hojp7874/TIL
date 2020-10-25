@@ -2,11 +2,9 @@
 
 {% block content %}
 <h1>로그인</h1>
-<!-- action을 비워두면 현재 위치한 경로로 요청한다. -->
-<form action="" method='POST'>
+<form action="" method="POST">
   {% csrf_token %}
   {{ form.as_p }}
   <input type="submit">
 </form>
-{{ user }}
 {% endblock %}

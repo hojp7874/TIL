@@ -16,11 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-# http://~~/articles -> articles 앱에서 관리
-# http://~~/pages -> pages 앱에서 관리
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
     path('articles/', include('articles.urls')),
     path('pages/', include('pages.urls')),
 ]

@@ -13,19 +13,20 @@
     <p>글 번호: {{ article.pk }}</p>
     <p>글 제목: {{ article.title }}</p>
     <p>글 내용: {{ article.content }}</p>
-    <form action="{% url 'articles:like' article.pk %}" method="post">
+    <form action="{% url 'articles:like' article.pk %}" method="POST" class="d-inline">
       {% csrf_token %}
       {% if request.user in article.like_users.all %}
-        <button class="btn btn-link">
-          <i class="fas fa-heart" style="color: crimson;"></i>
+        <button class="btn btn-link" style="color: crimson;">
+          <i class="fas fa-heart"></i>
         </button>
-        {% else %}
-        <button class="btn btn-link">
-          <i class="fas fa-heart" style="color: black;"></i>
+      {% else %}
+        <button class="btn btn-link" style="color: black;">
+          <i class="fas fa-heart"></i>
         </button>
       {% endif %}
-      {{ article.like_users.all.count }}명이 이 글을 좋아합니다.
     </form>
+    {{ article.likes }} 명이 이 글을 좋아합니다.
+    <br>
     <a href="{% url 'articles:detail' article.pk %}">[detail]</a>
     <hr>
   {% endfor %}

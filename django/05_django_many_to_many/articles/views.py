@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods, require_POST
+from django.db.models import Count
 from .models import Article, Comment
 from .forms import ArticleForm, CommentForm
 
 # Create your views here.
 def index(request):
-    articles = Article.objects.order_by('-pk')
+    articles = Article.objects.prefetch_related('like_users').select_related('user').annotate(likes=Count('like_users')).order_by('-pk')
     context = {
         'articles': articles,
     }
@@ -111,12 +112,20 @@ def comments_delete(request, article_pk, comment_pk):
 
 @require_POST
 def like(request, article_pk):
+    # 인증된 사용자만 가능
     if request.user.is_authenticated:
         article = get_object_or_404(Article, pk=article_pk)
+        # user가 article에 좋아요를 눌렀는지 안눌렀는지
+        
+        # 1-1. user가 article을 좋아요 누른 전체유저에 포함이 되어있는지 안되어있는지.
+        # if request.user in article.like_users.all():
+        
+        # 1-2. user가 article을 좋아요 누른 전체유저에 존재하는지.
         if article.like_users.filter(pk=request.user.pk).exists():
-        # if request.user in article.like_users.all(): # 좀 더 느림
+            # 좋아요 취소
             article.like_users.remove(request.user)
         else:
+            # 좋아요
             article.like_users.add(request.user)
         return redirect('articles:index')
     return redirect('accounts:login')

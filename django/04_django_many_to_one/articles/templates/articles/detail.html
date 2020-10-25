@@ -36,14 +36,14 @@
     <p>댓글이 아직 없어요..</p>
   {% endfor %}
   <hr>
+  <h4>댓글 작성</h4>
   {% if request.user.is_authenticated %}
-    <h4>댓글 작성</h4>
     <form action="{% url 'articles:comments_create' article.pk %}" method="POST">
       {% csrf_token %}
       {{ comment_form }}
       <input type="submit">
     </form>
   {% else %}
-    <a href="{% url 'accounts:login' %}">댓글을 작성하려면 로그인 하세요</a>
+    <a href="{% url 'accounts:login' %}">[댓글을 작성하려면 로그인 하세요.]</a>
   {% endif %}
 {% endblock  %}

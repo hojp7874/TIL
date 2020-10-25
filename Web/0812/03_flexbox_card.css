@@ -1,73 +1,80 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  h4 {
-    font-size: 20px;
-    font-weight: bold;
-    font-family: Arial;
-  }
-  
-  p {
-    font-family: Arial;
-  }
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  .card {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      width: 700px;
-      border: 2px dashed;
-      margin: 0;
-  }
-  
-  .card-nav {
-      display: flex;
-      justify-content: center;
-      background-color: green;
-  }
+h4 {
+  font-size: 20px;
+  font-weight: bold;
+  font-family: Arial;
+}
 
-  .card-header {
-      padding: 18px;
-  }
+p {
+  font-family: Arial;
+}
 
-  .card-img {
-      display: block;
-      width: 100%;
-      height: 330px;
-  }
+/* 여기서부터 작성해주세요. */
+.container {
+  width: 1000px;
+  margin: 30px auto;
+}
 
-  .card-img-description {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 70px;
-      background-color: green;
-      color: white;
-  }
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 700px;
+  border: 2px dashed black;
+  margin: 0 auto;
+}
 
-  .card-body {
-      padding: 18px;
-  }
+.card-nav {
+  display: flex;
+  justify-content: center;
+  background-color: green;
+}
 
-  .card-body-title {
-      display: flex;
-      justify-content: space-between;
-  }
+.card-header {
+  padding: 18px;
+}
 
-  .card-body-description {
-      background-color: lightgoldenrodyellow;
-      padding: 9px;
-      margin: 9px 0;
-  }
+.card-img {
+  display: block;
+  width: 100%;
+  height: 330px;
+}
 
-  .card-footer {
-      background-color: green;
-      color: white;
-      display: flex;
-      justify-content: flex-end;
-      padding: 9px;
-  }
+.card-img-description {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: green;
+  height: 70px;
+  justify-content: center;
+}
+
+.card-body {
+  padding: 18px;
+}
+
+.card-body-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-body-description {
+  background-color: linen;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  background-color: green;
+  color: white;
+  padding: 10px;
+}
+

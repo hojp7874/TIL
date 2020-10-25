@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view
 from django.core import serializers
 from django.http.response import JsonResponse
 
-from .serializers import ArticleSerializer
+from articles.serializers import ArticleSerializer
 
 from .models import Article
 
@@ -30,8 +30,8 @@ def article_list_json_1(request):
             'id': article.id,
             'title': article.title,
             'content': article.content,
-            'created_at': article.created_at,
-            'updated_at': article.updated_at,
+            # 'created_at': article.created_at,
+            # 'updated_at': article.updated_at,
         })
     return JsonResponse(articles_json, safe=False)
 
@@ -40,7 +40,7 @@ def article_list_json_2(request):
     articles = Article.objects.all()
     data = serializers.serialize("json", articles)
     # print(data)
-    # print(type(data)) => str
+    # print(type(data))
     return HttpResponse(data, content_type='application/json')
 
 

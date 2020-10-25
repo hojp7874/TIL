@@ -1,88 +1,30 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>DTL for, if tags 연습!</h1>
-    <h2>1. for tag</h2>
-    {% for menu in menus %}
-        {{menu}}
-    {% endfor %}
-    <hr>
+{% extends 'base.html' %}
 
-    {% for menu in menus %}
-        {{ forloop.counter }} : {{ menu }}
-    {% endfor %}
-    <hr>
-    
-    {% for x in empty_list %}
-        {{ x }}
-    {% empty %}
-        <p>아무것도 없어요!</p>
-    {% endfor %}
-    <hr>
-    
-    <h2>3. if tag</h2>
-    {% if '짜장면' in menus %}
-        <p>짜장면은 고춧가루지</p>
-    {% endif %}
-    <hr>
-    {% if empty_list|length > 10 %}
-        <p>길이가 10보다 크네요.</p>
-    {% else %}
-        <p>길이가 10보다 작네요.</p>
-    {% endif %}
-    
-    <h2>4, Lorem4. Lorem</h2>
-    {% lorem %}
-    <hr>
-    {% lorem 3 %}
-    <hr>
-    {% lorem 3 w random %}
-    <hr>
-    {% lorem 2 p %}
-    <hr>
-
-    <h2>5. truncate</h2>
-    <p>{{ my_sentence|truncatechars:5 }}</p>
-    <p>{{ my_sentence|truncatewords:3 }}</p>
-    <hr>
-
-    <h2>6. 글자 관련 필터</h2>
-    <p>{{ 'abc'|length }}</p>
-    <p>{{ 'abc'|lower }}</p>
-    <p>{{ 'my name is jinpyo'|title }}</p>
-    <p>{{ 'my name is jinpyo'|capfirst }}</p>
-    <p>{{ menus|random }}</p>
-    <hr>
-
-    <!-- 템플릿에서는 왠만하면 연산 ㄴㄴ.
-    사용자에게 보여줄 '표현'에만 집중하자-->
-    <h2>7. 연산</h2>
-    <p>{{ 4|add:6 }}</p>
-    <hr>
-
-    <h2>8. 날짜 표현</h2>
-    <p>{{ datetimenow }}</p>
-
-    <!-- 현재 시간을 여러 형태로 변환 -->
-    {% now "DATETIME_FORMAT" %}
-    <hr>
-    {% now "SHORT_DATETIME_FORMAT" %}
-    <hr>
-    {% now "DATE_FORMAT" %}
-    <hr>
-    {% now "SHORT_DATE_FORMAT" %}
-    <hr>
-    {% now "Y년 m월 d일 D" %}
-    <hr>
-    {% now "Y" as current_year %}<br>
-    <b>{{ current_year }}</b>
-    <hr>
-
-
-</body>
-</html>
+{% block content %}
+  <h1>DTL for, if tags 연습</h1>
+  <h2>1. for tag</h2>
+  {% for menu in menus %}
+    {{ menu }}
+  {% endfor %}
+  <hr>
+  {% for menu in menus %}
+    {{ forloop.counter }} : {{ menu }}
+  {% endfor %}
+  <hr>
+  {% for x in empty_list %}
+    {{ x }}
+  {% empty %}
+    <p>아무것도 없어요!!</p>
+  {% endfor %}
+  <hr>
+  <h2>2. if tag</h2>
+  {% if '짜장면' in menus %}
+    <p>짜장면은 고추가루지</p>
+  {% endif %}
+  <hr>
+  {% if empty_list|length > 10 %}
+    <p>길이가 10보다 크네요.</p>
+  {% else %}
+    <p>길이가 10보다 작네요.</p>
+  {% endif %}
+{% endblock %}

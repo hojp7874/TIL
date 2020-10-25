@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from django.views.decorators.http import require_http_methods, require_POST
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods, require_POST
 from .models import Article
 from .forms import ArticleForm
 
@@ -55,9 +55,9 @@ def update(request, pk):
     return render(request, 'articles/update.html', context)
 
 
-@login_required
 @require_POST
 def delete(request, pk):
-    article = Article.objects.get(pk=pk)
-    article.delete()
+    if request.user.is_authenticated:
+        article = Article.objects.get(pk=pk)
+        article.delete()
     return redirect('articles:index')

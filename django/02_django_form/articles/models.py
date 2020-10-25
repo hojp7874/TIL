@@ -6,14 +6,12 @@ from imagekit.processors import Thumbnail
 class Article(models.Model): # 상속
     title = models.CharField(max_length=10)
     content = models.TextField()
-    # image = models.ImageField(blank=True, upload_to='%Y/%m/%d/')
     image = ProcessedImageField(
-        blank=True,
-        processors=[Thumbnail(300, 200)],
-        format='JPEG',
-        options={'quality': 60},
-    )
-
+                blank=True, 
+                processors=[Thumbnail(200,300)],
+                format='JPEG',
+                options={'quality': 90},
+            )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

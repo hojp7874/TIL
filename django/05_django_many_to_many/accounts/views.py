@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import (
@@ -7,9 +7,9 @@ from django.contrib.auth.forms import (
 )
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_http_methods, require_safe
-from django.contrib.auth import update_session_auth_hash, get_user_model
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import get_user_model
 from .forms import CustomUserChangeForm, CustomUserCreationForm
-from .models import User
 
 # Create your views here.
 @require_http_methods(['GET', 'POST'])
@@ -96,20 +96,26 @@ def change_password(request):
 
 
 def profile(request, username):
-    person = get_object_or_404(get_user_model(), username=username)
+    User = get_user_model()
+    person = get_object_or_404(User, username=username)
     context = {
         'person': person,
     }
     return render(request, 'accounts/profile.html', context)
 
 
-@login_required
-def follow(request, username):
-    to_user = get_object_or_404(get_user_model(), username=username)
-    from_user = request.user
-    if from_user != to_user:
-        if to_user.followers.filter(username=from_user.username).exists():
-            to_user.followers.remove(from_user)
+@require_POST
+def follow(request, user_pk):
+    # 상대방
+    you = get_object_or_404(get_user_model(), pk=user_pk)
+    # 나
+    me = request.user
+
+    if me != you:
+        # if user in person.followers.all():
+        if you.followers.filter(pk=me.pk).exists():
+            you.followers.remove(me)
         else:
-            to_user.followers.add(from_user)
-    return redirect('accounts:profile', to_user.username)
+            you.followers.add(me)
+    return redirect('accounts:profile', you.username)
+    

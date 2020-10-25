@@ -5,6 +5,7 @@
   <h1 class="text-center">UPDATE</h1>
   <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
+    {{ form.as_p }}
     {% bootstrap_form form %}
     {% buttons %}
       <button type="submit" class="btn btn-primary">Submit</button>
