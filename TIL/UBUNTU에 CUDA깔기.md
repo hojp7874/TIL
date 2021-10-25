@@ -1,0 +1,2 @@
+# UBUNTU에 CUDA깔기
+
