@@ -30,6 +30,7 @@ async def main():
     futures = [
         asyncio.ensure_future(fetch(url, executor)) for url in urls
     ]
+    print(futures)
     
     # 결과 취합
     rst = await asyncio.gather(*futures)
