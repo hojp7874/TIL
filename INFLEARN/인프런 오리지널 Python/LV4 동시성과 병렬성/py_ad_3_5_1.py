@@ -3,7 +3,7 @@ Section 3
 Concurrency, CPU Bound vs I/O Bound - I/O Bound(2) - threading vs asyncio vs multiprocessing
 Keyword - I/O Bound, requests, threading
 
-I/O Bound Threading 예제
+I/O Bound MultiThreading 예제
 
 """
 
