@@ -1,7 +1,0 @@
-clone vs pull
-
-clone
-레포를 완전히 복제
-
-pull
-기존에 복제돼있던 레포를 업데이트
