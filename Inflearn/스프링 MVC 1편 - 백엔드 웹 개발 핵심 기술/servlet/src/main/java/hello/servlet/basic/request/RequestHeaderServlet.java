@@ -47,8 +47,8 @@ public class RequestHeaderServlet extends HttpServlet {
         }
 */
         // 요즘 방식
-        req.getHeaderNames().asIterator()
-                .forEachRemaining(headerName -> System.out.println(headerName));
+        req.getHeaderNames().asIterator().forEachRemaining(headerName ->
+                System.out.println(headerName + ":" + req.getHeader(headerName)));
 
         System.out.println("--- HEADERS - END ---");
         System.out.println();
