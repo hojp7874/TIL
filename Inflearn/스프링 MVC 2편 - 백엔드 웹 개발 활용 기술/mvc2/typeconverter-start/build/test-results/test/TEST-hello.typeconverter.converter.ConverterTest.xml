@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="hello.typeconverter.converter.ConverterTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-05-24T11:15:07" hostname="JinPyoui-MacBookPro.local" time="0.132">
+  <properties/>
+  <testcase name="stringToIpPort()" classname="hello.typeconverter.converter.ConverterTest" time="0.132"/>
+  <system-out><![CDATA[20:15:07.495 [Test worker] INFO hello.typeconverter.converter.StringToIpPortConverter - convert source=127.0.0.1:8000
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
